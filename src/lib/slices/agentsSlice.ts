@@ -231,6 +231,22 @@ const agentsSlice = createSlice({
                 state.sortBy
             );
         },
+        setAgents: (state, action: PayloadAction<Agent[]>) => {
+            state.agents = action.payload;
+            // Set all filter options
+            state.allStatuses = Array.from(new Set(action.payload.map(a => a.status)));
+            state.allCategories = Array.from(new Set(action.payload.map(a => a.category)));
+            state.allPricingModels = Array.from(new Set(action.payload.map(a => a.pricingModel)));
+            // Set filteredAgents initially
+            state.filteredAgents = filterAndSortAgents(
+                state.agents,
+                state.searchQuery,
+                state.selectedStatuses,
+                state.selectedCategories,
+                state.selectedPricingModel,
+                state.sortBy
+            );
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -265,6 +281,7 @@ export const {
     removeStatusFilter,
     addCategoryFilter,
     removeCategoryFilter,
+    setAgents,
 } = agentsSlice.actions;
 
 export default agentsSlice.reducer; 

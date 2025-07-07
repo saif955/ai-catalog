@@ -1,8 +1,16 @@
-import { Suspense } from "react";
 import AgentsCatalogClient from "./agents-catalog-client";
-import CardSkeleton from "@/components/ui/CardSkeleton";
+import fs from "fs/promises";
+import path from "path";
 
-export default function Home() {
+async function fetchAgentsOnServer() {
+  const filePath = path.join(process.cwd(), "mock-agents.json");
+  const data = await fs.readFile(filePath, "utf-8");
+  return JSON.parse(data);
+}
+
+export default async function Home() {
+  const agents = await fetchAgentsOnServer();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-4 py-8">
@@ -15,11 +23,7 @@ export default function Home() {
             Discover and explore intelligent AI agents for your business needs
           </p>
         </div>
-
-        {/* Client-side component with Redux */}
-        <Suspense fallback={<CardSkeleton />}>
-          <AgentsCatalogClient />
-        </Suspense>
+        <AgentsCatalogClient initialAgents={agents} />
       </div>
     </div>
   );

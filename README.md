@@ -21,12 +21,18 @@ A modern, feature-rich AI agents catalog built with Next.js 15, Redux Toolkit, a
 - **Clear All Filters** - One-click reset to default state
 - **Active Filters Display** - Visual indicators with individual removal options
 
+### 🆕 Server-Side Data Fetching (Next.js App Router)
+
+- **Server-rendered Agents List** - Agents data is fetched on the server at request time using Next.js App Router conventions (async server component)
+- **No Client-side Fetching** - All agent data is available on initial page load for SEO and performance
+- **Redux Initialization** - Redux state is initialized with server-fetched data
+
 ### 🏗️ State Management
 
 - **Redux Toolkit** - Centralized state management
-- **Async Data Fetching** - Simulated API calls with loading states
+- **Server-Side Data Fetching** - Agents are loaded on the server in `page.tsx` and passed to the client
+- **No Client-side Retry** - Error states are static, as data is always fetched server-side
 - **Optimized Filtering** - Real-time filtering with performance optimization
-- **Error Handling** - Graceful error states with retry functionality
 - **Type Safety** - Full TypeScript support throughout
 
 ### 🎨 User Experience
@@ -41,7 +47,7 @@ A modern, feature-rich AI agents catalog built with Next.js 15, Redux Toolkit, a
 
 ### Frontend Framework
 
-- **Next.js 15** - React framework with App Router
+- **Next.js 15** - React framework with App Router and server-side data fetching
 - **React 19** - Latest React features and performance improvements
 - **TypeScript** - Type-safe development experience
 
@@ -63,6 +69,17 @@ A modern, feature-rich AI agents catalog built with Next.js 15, Redux Toolkit, a
 - **ESLint** - Code linting and quality enforcement
 - **Turbopack** - Fast bundler for development
 - **PostCSS** - CSS processing and optimization
+
+### Data Fetching
+
+- **Server Component Fetching** - Agents data is loaded in `page.tsx` using Node.js file system APIs (or can be replaced with an API call)
+- **No useEffect or Thunks for Fetching** - All data is available at render time
+
+## 🛠️ Modular UI Components
+
+- **AgentCard** - Renders a single agent card, fully responsive and contained
+- **SidebarFilters** - Handles all search and filter UI in a left sidebar
+- **ThemeToggle** - Light/dark mode toggle
 
 ## 📁 Project Structure
 

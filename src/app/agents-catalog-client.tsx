@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import React from "react";
 import {
   Search,
   Zap,
@@ -17,7 +17,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
-  fetchAgents,
   setSearchQuery,
   setSelectedPricingModel,
   setSortBy,
@@ -27,10 +26,14 @@ import {
   addCategoryFilter,
   removeCategoryFilter,
 } from "@/lib/slices/agentsSlice";
-import AgentCard from "@/components/ui/AgentCard";
+import AgentCard, { Agent } from "@/components/ui/AgentCard";
 import SidebarFilters from "@/components/ui/SidebarFilters";
 
-export default function AgentsCatalogClient() {
+export default function AgentsCatalogClient({
+  initialAgents,
+}: {
+  initialAgents: Agent[];
+}) {
   const dispatch = useAppDispatch();
   const {
     agents,
@@ -47,10 +50,12 @@ export default function AgentsCatalogClient() {
     allPricingModels,
   } = useAppSelector((state) => state.agents);
 
-  // Fetch agents on component mount
-  useEffect(() => {
-    dispatch(fetchAgents());
-  }, [dispatch]);
+  // Initialize agents in Redux store if not already set
+  React.useEffect(() => {
+    if (initialAgents && initialAgents.length > 0 && agents.length === 0) {
+      dispatch({ type: "agents/setAgents", payload: initialAgents });
+    }
+  }, [initialAgents, agents.length, dispatch]);
 
   // Icon mapping for different categories
   const categoryIcons: {
@@ -156,7 +161,6 @@ export default function AgentsCatalogClient() {
             <h3 className="text-lg font-semibold mb-2">Error loading agents</h3>
             <p>{error}</p>
           </div>
-          <Button onClick={() => dispatch(fetchAgents())}>Try Again</Button>
         </CardContent>
       </Card>
     );
